@@ -8,6 +8,7 @@ export interface Meal {
   photo?: string;
   timestamp: Date;
   estimatedBy: 'manual' | 'ai' | 'database';
+  ingredients?: string[];
 }
 
 export interface User {
@@ -103,8 +104,9 @@ interface AppState {
   habitCreationStep: number;
   selectedHabit: Habit | null;
   
-  // UI state
-  currentView: 'dashboard' | 'add-meal' | 'history' | 'profile' | 'signup' | 'onboarding' | 'habits' | 'habit-creation' | 'habit-onboarding';
+  // UI state  
+  currentView: 'dashboard' | 'add-meal' | 'history' | 'profile' | 'signup' | 'onboarding' | 'habits' | 'habit-creation' | 'habit-onboarding' | 'camera' | 'scan' | 'search' | 'ai' | 'quick-add' | 'library';
+  previousView?: string; // Track navigation history for better UX
   isLoading: boolean;
   
   // Actions
@@ -385,6 +387,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   totalProteinToday: 0,
   historicalData: mockHistoricalData,
   currentView: 'dashboard',
+  previousView: undefined,
   isLoading: false,
 
   // Habit state
@@ -557,7 +560,11 @@ export const useAppStore = create<AppState>((set, get) => ({
   
   setCurrentView: (view) => {
     console.log('Setting current view:', view);
-    set({ currentView: view });
+    const currentView = get().currentView;
+    set({ 
+      currentView: view,
+      previousView: currentView 
+    });
   },
   
   loadHistoricalData: () => {

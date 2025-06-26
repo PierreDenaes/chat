@@ -46,7 +46,7 @@ export function ProteinProgressRing({
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke="#10B981"
+          stroke="url(#purpleGradient)"
           strokeWidth={strokeWidth}
           fill="transparent"
           strokeLinecap="round"
@@ -59,6 +59,14 @@ export function ProteinProgressRing({
             delay: 0.2 
           }}
         />
+        
+        {/* Gradient definition */}
+        <defs>
+          <linearGradient id="purpleGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#9333EA" />
+            <stop offset="100%" stopColor="#EC4899" />
+          </linearGradient>
+        </defs>
       </svg>
       
       {/* Center content */}
@@ -69,7 +77,7 @@ export function ProteinProgressRing({
           transition={{ delay: 0.5, duration: 0.3 }}
           className="text-center"
         >
-          <div className="text-2xl font-bold text-health-primary">
+          <div className="text-2xl font-bold text-purple-600">
             {current}g
           </div>
           <div className="text-sm text-gray-500">
@@ -87,7 +95,7 @@ export function ProteinProgressRing({
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 1.2, duration: 0.3 }}
-          className="absolute -top-2 -right-2 w-8 h-8 bg-health-accent rounded-full flex items-center justify-center"
+          className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center"
         >
           <span className="text-white text-sm">🎯</span>
         </motion.div>

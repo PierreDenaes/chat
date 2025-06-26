@@ -153,7 +153,7 @@ export function SignupForm() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-blue-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50 flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -166,7 +166,7 @@ export function SignupForm() {
               animate={{ scale: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <CardTitle className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
+              <CardTitle className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                 Join DynProt
               </CardTitle>
               <CardDescription className="text-gray-600 mt-2">
@@ -180,7 +180,7 @@ export function SignupForm() {
                 <motion.div
                   key={step}
                   className={`w-3 h-3 rounded-full ${
-                    step <= signupStep ? 'bg-emerald-500' : 'bg-gray-200'
+                    step <= signupStep ? 'bg-purple-500' : 'bg-gray-200'
                   }`}
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
@@ -295,7 +295,7 @@ export function SignupForm() {
                       )}
                     </div>
 
-                    <Button type="submit" className="w-full bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600">
+                    <Button type="submit" className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white">
                       Continue <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
                   </form>
@@ -518,7 +518,7 @@ export function SignupForm() {
                       <Button
                         onClick={handleFinalSubmit}
                         disabled={!captchaVerified || !agreeToTerms || isLoading}
-                        className="flex-1 bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600"
+                        className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
                       >
                         {isLoading ? (
                           <>

@@ -53,7 +53,7 @@ export function MealCard({ meal, onDelete }: MealCardProps) {
       transition={{ duration: 0.3 }}
       className="meal-card"
     >
-      <Card className="overflow-hidden">
+      <Card className="overflow-hidden shadow-lg border-0 bg-white/80 backdrop-blur-sm">
         <CardContent className="p-4">
           <div className="flex items-start justify-between">
             <div className="flex-1">
@@ -69,13 +69,30 @@ export function MealCard({ meal, onDelete }: MealCardProps) {
               )}
               
               {/* Meal description */}
-              <h3 className="font-semibold text-health-text mb-2 line-clamp-2">
+              <h3 className="font-semibold text-gray-800 mb-2 line-clamp-2">
                 {meal.description}
               </h3>
+
+              {/* AI-detected ingredients */}
+              {meal.ingredients && meal.ingredients.length > 0 && (
+                <div className="mb-3">
+                  <p className="text-xs text-gray-500 mb-1">AI detected ingredients:</p>
+                  <div className="flex flex-wrap gap-1">
+                    {meal.ingredients.map((ingredient, index) => (
+                      <span
+                        key={index}
+                        className="inline-block bg-purple-50 text-purple-600 text-xs px-2 py-1 rounded-md border border-purple-100"
+                      >
+                        {ingredient}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
               
               {/* Protein amount */}
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-2xl font-bold text-health-primary">
+                <span className="text-2xl font-bold text-purple-600">
                   {meal.protein}g
                 </span>
                 <span className="text-sm text-gray-500">protein</span>

@@ -57,17 +57,17 @@ export function HistoryView() {
         transition={{ delay: 0.1 }}
         className="grid grid-cols-2 gap-4 mb-6"
       >
-        <Card>
+        <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
           <CardContent className="p-4 text-center">
-            <TrendingUp className="w-6 h-6 text-health-primary mx-auto mb-2" />
+            <TrendingUp className="w-6 h-6 text-purple-600 mx-auto mb-2" />
             <div className="font-bold text-lg">{averageProtein}g</div>
             <div className="text-xs text-gray-500">Avg Daily</div>
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
           <CardContent className="p-4 text-center">
-            <Calendar className="w-6 h-6 text-health-secondary mx-auto mb-2" />
+            <Calendar className="w-6 h-6 text-pink-600 mx-auto mb-2" />
             <div className="font-bold text-lg">{goalsAchieved}/{totalDays}</div>
             <div className="text-xs text-gray-500">Goals Met</div>
           </CardContent>
@@ -81,7 +81,7 @@ export function HistoryView() {
         transition={{ delay: 0.2 }}
         className="mb-6"
       >
-        <Card>
+        <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="text-lg">7-Day Protein Trend</CardTitle>
           </CardHeader>
@@ -101,8 +101,9 @@ export function HistoryView() {
                   />
                   <Tooltip 
                     contentStyle={{
-                      backgroundColor: 'white',
-                      border: '1px solid #E2E8F0',
+                      backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                      backdropFilter: 'blur(8px)',
+                      border: '1px solid rgba(139, 92, 246, 0.2)',
                       borderRadius: '8px',
                       fontSize: '12px'
                     }}
@@ -110,10 +111,10 @@ export function HistoryView() {
                   <Line 
                     type="monotone" 
                     dataKey="protein" 
-                    stroke="#10B981" 
+                    stroke="#9333EA" 
                     strokeWidth={3}
-                    dot={{ fill: '#10B981', strokeWidth: 2, r: 4 }}
-                    activeDot={{ r: 6, fill: '#10B981' }}
+                    dot={{ fill: '#9333EA', strokeWidth: 2, r: 4 }}
+                    activeDot={{ r: 6, fill: '#9333EA' }}
                   />
                   <Line 
                     type="monotone" 
@@ -136,7 +137,7 @@ export function HistoryView() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
       >
-        <h2 className="text-xl font-semibold text-health-text mb-4">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">
           Recent Days
         </h2>
         
@@ -148,7 +149,7 @@ export function HistoryView() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.1 * index }}
             >
-              <Card>
+              <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg">
@@ -161,7 +162,7 @@ export function HistoryView() {
                     <div className="flex items-center gap-2">
                       <Badge 
                         variant={day.goalAchieved ? 'default' : 'secondary'}
-                        className={day.goalAchieved ? 'bg-health-primary' : ''}
+                        className={day.goalAchieved ? 'bg-purple-600' : ''}
                       >
                         {day.totalProtein}g / 120g
                       </Badge>
@@ -174,7 +175,7 @@ export function HistoryView() {
                 
                 <CardContent className="space-y-3">
                   {day.meals.map((meal) => (
-                    <div key={meal.id} className="border-l-4 border-health-primary pl-4">
+                    <div key={meal.id} className="border-l-4 border-purple-600 pl-4">
                       <div className="flex justify-between items-start">
                         <div className="flex-1">
                           <p className="font-medium text-sm">{meal.description}</p>
@@ -186,7 +187,7 @@ export function HistoryView() {
                           </p>
                         </div>
                         <div className="text-right">
-                          <span className="font-bold text-health-primary">
+                          <span className="font-bold text-purple-600">
                             {meal.protein}g
                           </span>
                         </div>
@@ -199,6 +200,7 @@ export function HistoryView() {
           ))}
         </div>
       </motion.div>
+      </div>
     </div>
   );
 }

@@ -10,11 +10,19 @@ import { OnboardingFlow } from './OnboardingFlow';
 import { HabitTracker } from './HabitTracker';
 import { HabitCreationForm } from './HabitCreationForm';
 import { HabitOnboarding } from './HabitOnboarding';
+import { CameraInterface } from './CameraInterface';
 import { Dashboard } from './Dashboard';
 import { AddMealForm } from './AddMealForm';
 import { HistoryView } from './HistoryView';
 import { ProfileView } from './ProfileView';
 import { BottomNavigation } from './BottomNavigation';
+import { SecondaryNavigation } from './SecondaryNavigation';
+import { ScanView } from './ScanView';
+import { SearchView } from './SearchView';
+import { AIView } from './AIView';
+import { QuickAddView } from './QuickAddView';
+import { LibraryView } from './LibraryView';
+import { NavigationAudit } from './NavigationAudit';
 
 export function DynProtMobileApp() {
   const { isAuthenticated, currentView, loadHistoricalData, setCurrentView } = useAppStore();
@@ -97,6 +105,18 @@ export function DynProtMobileApp() {
         return <HabitCreationForm />;
       case 'habit-onboarding':
         return <HabitOnboarding />;
+      case 'camera':
+        return <CameraInterface />;
+      case 'scan':
+        return <ScanView />;
+      case 'search':
+        return <SearchView />;
+      case 'ai':
+        return <AIView />;
+      case 'quick-add':
+        return <QuickAddView />;
+      case 'library':
+        return <LibraryView />;
       case 'history':
         return <HistoryView />;
       case 'profile':
@@ -124,6 +144,12 @@ export function DynProtMobileApp() {
 
       {/* Bottom Navigation */}
       <BottomNavigation />
+
+      {/* Secondary Navigation for Food Logging Tools */}
+      <SecondaryNavigation />
+
+      {/* Navigation State Monitor (Development Only) */}
+      <NavigationAudit />
 
       {/* Toast Notifications */}
       <Toaster 

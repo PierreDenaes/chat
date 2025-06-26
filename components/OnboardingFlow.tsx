@@ -92,7 +92,7 @@ export function OnboardingFlow() {
   const IconComponent = currentStepData.icon
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-blue-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50 flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -100,7 +100,7 @@ export function OnboardingFlow() {
       >
         <Card className="shadow-2xl border-0 bg-white/90 backdrop-blur-sm overflow-hidden">
           {/* Progress Header */}
-          <div className="bg-gradient-to-r from-emerald-500 to-blue-500 p-4">
+          <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-4">
             <div className="flex items-center justify-between text-white">
               <div>
                 <h2 className="text-sm font-medium">Welcome, {user?.name}!</h2>
@@ -144,7 +144,7 @@ export function OnboardingFlow() {
                   transition={{ delay: 0.2 }}
                   className="flex justify-center"
                 >
-                  <div className="w-20 h-20 bg-gradient-to-br from-emerald-500 to-blue-500 rounded-full flex items-center justify-center">
+                  <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
                     <IconComponent className="w-10 h-10 text-white" />
                   </div>
                 </motion.div>
@@ -154,7 +154,7 @@ export function OnboardingFlow() {
                   <h3 className="text-2xl font-bold text-gray-800 mb-2">
                     {currentStepData.title}
                   </h3>
-                  <p className="text-emerald-600 font-medium mb-4">
+                  <p className="text-purple-600 font-medium mb-4">
                     {currentStepData.description}
                   </p>
                   <p className="text-gray-600 leading-relaxed">
@@ -168,10 +168,10 @@ export function OnboardingFlow() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
-                    className="bg-gradient-to-r from-emerald-50 to-blue-50 rounded-lg p-4 border border-emerald-200"
+                    className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200"
                   >
                     <div className="flex items-center justify-center space-x-2">
-                      <Target className="w-5 h-5 text-emerald-600" />
+                      <Target className="w-5 h-5 text-purple-600" />
                       <span className="text-lg font-semibold text-gray-800">
                         Your daily goal: {dailyProteinGoal}g protein
                       </span>
@@ -186,12 +186,12 @@ export function OnboardingFlow() {
                     transition={{ delay: 0.4 }}
                     className="grid grid-cols-2 gap-4 mt-6"
                   >
-                    <div className="text-center p-4 bg-gray-50 rounded-lg">
-                      <Utensils className="w-8 h-8 text-emerald-500 mx-auto mb-2" />
+                    <div className="text-center p-4 bg-purple-50 rounded-lg">
+                      <Utensils className="w-8 h-8 text-purple-500 mx-auto mb-2" />
                       <p className="text-sm font-medium">Text Description</p>
                     </div>
-                    <div className="text-center p-4 bg-gray-50 rounded-lg">
-                      <Camera className="w-8 h-8 text-blue-500 mx-auto mb-2" />
+                    <div className="text-center p-4 bg-pink-50 rounded-lg">
+                      <Camera className="w-8 h-8 text-pink-500 mx-auto mb-2" />
                       <p className="text-sm font-medium">Photo Recognition</p>
                     </div>
                   </motion.div>
@@ -250,7 +250,7 @@ export function OnboardingFlow() {
 
               <Button
                 onClick={handleNext}
-                className="bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 flex items-center"
+                className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white flex items-center"
               >
                 {currentStep === onboardingSteps.length ? (
                   <>
