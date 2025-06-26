@@ -125,22 +125,23 @@ export function AddMealForm() {
   };
 
   return (
-    <div className="container-mobile py-6 pb-20">
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="flex items-center gap-4 mb-6"
-      >
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setCurrentView('dashboard')}
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50 p-4 pb-20">
+      <div className="max-w-md mx-auto">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center gap-4 mb-6"
         >
-          <ArrowLeft className="w-5 h-5" />
-        </Button>
-        <h1 className="text-2xl font-bold text-health-text">Add Meal</h1>
-      </motion.div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setCurrentView('dashboard')}
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </Button>
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Add Meal</h1>
+        </motion.div>
 
       {/* Input Method Selection */}
       <motion.div
@@ -149,7 +150,7 @@ export function AddMealForm() {
         transition={{ delay: 0.1 }}
         className="mb-6"
       >
-        <Card>
+        <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="text-lg">How would you like to log this meal?</CardTitle>
           </CardHeader>
@@ -191,7 +192,7 @@ export function AddMealForm() {
           animate={{ opacity: 1, scale: 1 }}
           className="mb-6"
         >
-          <Card>
+          <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
             <CardContent className="p-4">
               <div className="relative">
                 <Webcam
@@ -200,7 +201,7 @@ export function AddMealForm() {
                   className="w-full rounded-lg"
                 />
                 <div className="flex justify-center gap-4 mt-4">
-                  <Button onClick={handleCapturePhoto} className="bg-health-primary">
+                  <Button onClick={handleCapturePhoto} className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white">
                     <Camera className="w-4 h-4 mr-2" />
                     Capture
                   </Button>
@@ -221,7 +222,7 @@ export function AddMealForm() {
           animate={{ opacity: 1, scale: 1 }}
           className="mb-6"
         >
-          <Card>
+          <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
             <CardContent className="p-4">
               <img 
                 src={capturedPhoto} 
@@ -258,7 +259,7 @@ export function AddMealForm() {
         transition={{ delay: 0.2 }}
         className="mb-6"
       >
-        <Card>
+        <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="text-lg">Meal Description</CardTitle>
           </CardHeader>
@@ -292,7 +293,7 @@ export function AddMealForm() {
               <Button
                 onClick={handleEstimateFromText}
                 disabled={!description.trim() || isEstimating}
-                className="w-full bg-health-secondary hover:bg-blue-600"
+                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
               >
                 {isEstimating ? (
                   <>
@@ -336,14 +337,14 @@ export function AddMealForm() {
           animate={{ opacity: 1, scale: 1 }}
           className="mb-6"
         >
-          <Card className="border-health-primary">
+          <Card className="shadow-lg border-2 border-purple-200 bg-white/80 backdrop-blur-sm">
             <CardContent className="p-4 text-center">
               <div className="mb-2">
-                <Badge className="bg-health-light text-health-dark">
+                <Badge className="bg-purple-50 text-purple-800">
                   AI Estimated
                 </Badge>
               </div>
-              <div className="text-3xl font-bold text-health-primary mb-1">
+              <div className="text-3xl font-bold text-purple-600 mb-1">
                 {estimatedProtein}g
               </div>
               <div className="text-sm text-gray-500">protein content</div>
@@ -369,12 +370,13 @@ export function AddMealForm() {
         
         <Button
           onClick={handleSubmit}
-          className="flex-1 bg-health-primary hover:bg-health-dark"
+          className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
           disabled={!description.trim() || (inputMethod === 'manual' ? !manualProtein : estimatedProtein === null)}
         >
           Add Meal
         </Button>
       </motion.div>
+      </div>
     </div>
   );
 }

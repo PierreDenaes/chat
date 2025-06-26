@@ -52,22 +52,23 @@ export function ProfileView() {
   };
 
   return (
-    <div className="container-mobile py-6 pb-20">
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="flex items-center gap-4 mb-6"
-      >
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setCurrentView('dashboard')}
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50 p-4 pb-20">
+      <div className="max-w-md mx-auto">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center gap-4 mb-6"
         >
-          <ArrowLeft className="w-5 h-5" />
-        </Button>
-        <h1 className="text-2xl font-bold text-health-text">Profile</h1>
-      </motion.div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setCurrentView('dashboard')}
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </Button>
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Profile</h1>
+        </motion.div>
 
       {/* User Info */}
       <motion.div
@@ -76,12 +77,12 @@ export function ProfileView() {
         transition={{ delay: 0.1 }}
         className="mb-6"
       >
-        <Card>
+        <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
           <CardContent className="p-6 text-center">
-            <div className="w-20 h-20 bg-health-primary rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
               <User className="w-10 h-10 text-white" />
             </div>
-            <h2 className="text-xl font-semibold text-health-text mb-1">
+            <h2 className="text-xl font-semibold text-gray-800 mb-1">
               {user?.name}
             </h2>
             <p className="text-gray-500">{user?.email}</p>
@@ -96,10 +97,10 @@ export function ProfileView() {
         transition={{ delay: 0.2 }}
         className="mb-6"
       >
-        <Card>
+        <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Target className="w-5 h-5 text-health-primary" />
+              <Target className="w-5 h-5 text-purple-600" />
               Daily Protein Goal
             </CardTitle>
           </CardHeader>
@@ -119,7 +120,7 @@ export function ProfileView() {
                 />
                 <Button
                   onClick={handleSaveGoal}
-                  className="bg-health-primary hover:bg-health-dark"
+                  className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
                 >
                   <Save className="w-4 h-4 mr-1" />
                   Save
@@ -142,10 +143,10 @@ export function ProfileView() {
         transition={{ delay: 0.3 }}
         className="mb-6"
       >
-        <Card>
+        <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Bell className="w-5 h-5 text-health-secondary" />
+              <Bell className="w-5 h-5 text-pink-600" />
               Notifications
             </CardTitle>
           </CardHeader>
@@ -180,7 +181,7 @@ export function ProfileView() {
         transition={{ delay: 0.4 }}
         className="mb-6"
       >
-        <Card>
+        <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
           <CardHeader>
             <CardTitle>About DynProtMobile</CardTitle>
           </CardHeader>
@@ -223,6 +224,7 @@ export function ProfileView() {
           Sign Out
         </Button>
       </motion.div>
+      </div>
     </div>
   );
 }

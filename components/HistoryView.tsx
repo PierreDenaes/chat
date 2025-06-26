@@ -32,22 +32,23 @@ export function HistoryView() {
   const totalDays = historicalData.length;
 
   return (
-    <div className="container-mobile py-6 pb-20">
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="flex items-center gap-4 mb-6"
-      >
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setCurrentView('dashboard')}
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50 p-4 pb-20">
+      <div className="max-w-md mx-auto">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center gap-4 mb-6"
         >
-          <ArrowLeft className="w-5 h-5" />
-        </Button>
-        <h1 className="text-2xl font-bold text-health-text">History</h1>
-      </motion.div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setCurrentView('dashboard')}
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </Button>
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">History</h1>
+        </motion.div>
 
       {/* Summary Stats */}
       <motion.div

@@ -32,7 +32,7 @@ export function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-health-light to-white flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50 flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -44,7 +44,7 @@ export function LoginForm() {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-            className="w-16 h-16 bg-health-primary rounded-full flex items-center justify-center mx-auto mb-4"
+            className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4"
           >
             <Dumbbell className="w-8 h-8 text-white" />
           </motion.div>
@@ -53,7 +53,7 @@ export function LoginForm() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="text-3xl font-bold text-health-text mb-2"
+            className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2"
           >
             DynProtMobile
           </motion.h1>
@@ -69,7 +69,7 @@ export function LoginForm() {
         </div>
 
         {/* Login Form */}
-        <Card>
+        <Card className="shadow-xl border-0 bg-white/80 backdrop-blur-sm">
           <CardHeader>
             <CardTitle>Welcome Back</CardTitle>
           </CardHeader>
@@ -110,7 +110,7 @@ export function LoginForm() {
 
               <Button
                 type="submit"
-                className="w-full bg-health-primary hover:bg-health-dark"
+                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -125,9 +125,9 @@ export function LoginForm() {
             </form>
 
             {/* Demo Credentials */}
-            <div className="mt-6 p-4 bg-health-light rounded-lg">
-              <h3 className="font-semibold text-health-dark mb-2">Demo Credentials</h3>
-              <div className="text-sm text-health-text space-y-1">
+            <div className="mt-6 p-4 bg-purple-50 rounded-lg border border-purple-200">
+              <h3 className="font-semibold text-purple-800 mb-2">Demo Credentials</h3>
+              <div className="text-sm text-gray-700 space-y-1">
                 <p><span className="font-medium">Email:</span> demo@dynprot.com</p>
                 <p><span className="font-medium">Password:</span> demo123</p>
               </div>
@@ -141,19 +141,19 @@ export function LoginForm() {
               <h3 className="font-semibold text-health-text">What you can do:</h3>
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div className="flex items-center gap-2">
-                  <span className="text-health-primary">🤖</span>
+                  <span className="text-purple-600">🤖</span>
                   <span>AI Protein Estimation</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-health-secondary">📸</span>
+                  <span className="text-pink-600">📸</span>
                   <span>Photo Analysis</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-health-accent">📊</span>
+                  <span className="text-purple-600">📊</span>
                   <span>Progress Tracking</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-health-primary">🎯</span>
+                  <span className="text-pink-600">🎯</span>
                   <span>Goal Management</span>
                 </div>
               </div>
@@ -165,7 +165,7 @@ export function LoginForm() {
                 Don't have an account?{' '}
                 <button
                   onClick={startSignup}
-                  className="text-health-primary hover:text-health-dark font-medium"
+                  className="text-purple-600 hover:text-purple-800 font-medium"
                 >
                   Sign up now
                 </button>

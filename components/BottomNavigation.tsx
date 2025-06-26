@@ -18,7 +18,7 @@ export function BottomNavigation() {
   console.log('BottomNavigation render:', { currentView });
 
   return (
-    <div className="bottom-nav">
+    <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-sm border-t border-purple-100 flex items-center justify-around h-16 z-40 max-w-md mx-auto shadow-lg">
       {navItems.map((item) => {
         const Icon = item.icon;
         const isActive = currentView === item.id;
@@ -29,7 +29,7 @@ export function BottomNavigation() {
             onClick={() => setCurrentView(item.id)}
             className={`flex flex-col items-center justify-center flex-1 py-2 transition-colors ${
               isActive 
-                ? 'text-health-primary' 
+                ? 'text-purple-600' 
                 : 'text-gray-400 hover:text-gray-600'
             }`}
             whileTap={{ scale: 0.95 }}
@@ -37,7 +37,7 @@ export function BottomNavigation() {
             <motion.div
               animate={{ 
                 scale: isActive ? 1.1 : 1,
-                color: isActive ? '#10B981' : '#94A3B8'
+                color: isActive ? '#9333EA' : '#94A3B8'
               }}
               transition={{ duration: 0.2 }}
             >
@@ -52,7 +52,7 @@ export function BottomNavigation() {
             {isActive && (
               <motion.div
                 layoutId="activeTab"
-                className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-health-primary rounded-full"
+                className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-purple-600 rounded-full"
                 initial={false}
                 transition={{ type: "spring", stiffness: 500, damping: 30 }}
               />

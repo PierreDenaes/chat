@@ -13,7 +13,7 @@ import {
   Target, 
   Calendar, 
   TrendingUp, 
-  Fire, 
+  Flame, 
   CheckCircle2,
   Circle,
   MoreHorizontal,
@@ -201,7 +201,7 @@ export function HabitTracker() {
                     {Math.round(overallProgress)}%
                   </div>
                   <div className="flex items-center space-x-1">
-                    <Fire className="w-4 h-4 text-orange-500" />
+                    <Flame className="w-4 h-4 text-orange-500" />
                     <span className="text-sm text-gray-600">
                       {Math.max(...Object.values(habitStats).map(stat => stat.streak.currentStreak), 0)} day streak
                     </span>

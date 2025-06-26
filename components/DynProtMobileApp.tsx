@@ -107,7 +107,7 @@ export function DynProtMobileApp() {
   };
 
   return (
-    <div className="min-h-screen bg-health-bg">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50">
       {/* Main Content */}
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
@@ -130,10 +130,12 @@ export function DynProtMobileApp() {
         position="top-center"
         toastOptions={{
           style: {
-            background: 'white',
-            border: '1px solid #E2E8F0',
+            background: 'rgba(255, 255, 255, 0.9)',
+            backdropFilter: 'blur(8px)',
+            border: '1px solid rgba(139, 92, 246, 0.2)',
             borderRadius: '12px',
             fontSize: '14px',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
           },
         }}
       />
