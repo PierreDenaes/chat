@@ -1,0 +1,126 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* DynProtMobile theme */
+    --background: 248 250 252; /* slate-50 */
+    --foreground: 30 41 59; /* slate-800 */
+    --card: 255 255 255;
+    --card-foreground: 30 41 59;
+    --popover: 255 255 255;
+    --popover-foreground: 30 41 59;
+    --primary: 16 185 129; /* emerald-500 */
+    --primary-foreground: 255 255 255;
+    --secondary: 59 130 246; /* blue-500 */
+    --secondary-foreground: 255 255 255;
+    --muted: 241 245 249; /* slate-100 */
+    --muted-foreground: 100 116 139; /* slate-500 */
+    --accent: 245 158 11; /* amber-500 */
+    --accent-foreground: 255 255 255;
+    --destructive: 239 68 68; /* red-500 */
+    --destructive-foreground: 255 255 255;
+    --border: 226 232 240; /* slate-200 */
+    --input: 226 232 240;
+    --ring: 16 185 129;
+    --radius: 0.75rem;
+    --chart-1: 16 185 129; /* emerald-500 */
+    --chart-2: 59 130 246; /* blue-500 */
+    --chart-3: 245 158 11; /* amber-500 */
+    --chart-4: 139 92 246; /* violet-500 */
+    --chart-5: 236 72 153; /* pink-500 */
+  }
+
+  .dark {
+    --background: 15 23 42; /* slate-900 */
+    --foreground: 248 250 252; /* slate-50 */
+    --card: 30 41 59; /* slate-800 */
+    --card-foreground: 248 250 252;
+    --popover: 30 41 59;
+    --popover-foreground: 248 250 252;
+    --primary: 34 197 94; /* emerald-500 */
+    --primary-foreground: 15 23 42;
+    --secondary: 37 99 235; /* blue-600 */
+    --secondary-foreground: 248 250 252;
+    --muted: 51 65 85; /* slate-700 */
+    --muted-foreground: 148 163 184; /* slate-400 */
+    --accent: 217 119 6; /* amber-600 */
+    --accent-foreground: 248 250 252;
+    --destructive: 220 38 38; /* red-700 */
+    --destructive-foreground: 248 250 252;
+    --border: 51 65 85;
+    --input: 51 65 85;
+    --ring: 34 197 94;
+    --chart-1: 34 197 94;
+    --chart-2: 37 99 235;
+    --chart-3: 217 119 6;
+    --chart-4: 124 58 237;
+    --chart-5: 219 39 119;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-health-bg text-health-text font-sans;
+    /* Mobile-first responsive font sizing */
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  html {
+    /* Prevent horizontal scroll on mobile */
+    overflow-x: hidden;
+  }
+}
+
+@layer components {
+  /* Mobile-first container */
+  .container-mobile {
+    @apply w-full max-w-md mx-auto px-4;
+  }
+  
+  /* Protein progress ring */
+  .progress-ring {
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+  }
+  
+  /* Floating action button */
+  .fab {
+    @apply fixed bottom-20 right-6 w-14 h-14 rounded-full shadow-lg 
+           bg-health-primary text-white flex items-center justify-center
+           transition-all duration-200 hover:scale-105 active:scale-95
+           z-50;
+  }
+  
+  /* Mobile bottom navigation */
+  .bottom-nav {
+    @apply fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200
+           flex items-center justify-around h-16 z-40 max-w-md mx-auto;
+  }
+  
+  /* Meal card hover effects */
+  .meal-card {
+    @apply transition-all duration-200 hover:shadow-md hover:-translate-y-1;
+  }
+  
+  /* Success animation */
+  .success-pulse {
+    animation: pulse 0.6s ease-in-out;
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+}
+
+/* Hide Next.js badge and error messages */
+body > nextjs-portal {
+  display: none;
+}
