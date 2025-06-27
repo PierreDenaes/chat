@@ -1,245 +1,288 @@
-# DynProtMobile - Smart Protein Tracking PWA
+# DynProtMobile
 
-A complete Progressive Web App for tracking daily protein intake with AI-powered meal analysis. Built with Next.js, TypeScript, and modern web technologies to provide a native mobile app experience.
-
-![DynProtMobile](public/icon-192x192.png)
+A comprehensive health and nutrition tracking application built with Next.js 15, featuring protein goal management, meal tracking, habit monitoring, and physical progress logging.
 
 ## 🚀 Features
 
-### Core Functionality
-- **AI-Powered Protein Estimation**: Smart analysis of meal descriptions using mock AI algorithms
-- **Photo Meal Analysis**: Capture photos of meals for automatic protein content estimation
-- **Manual Entry**: Direct protein input for precise tracking
-- **Daily Goal Management**: Set and track custom daily protein targets
-- **Progress Visualization**: Beautiful circular progress indicators and charts
-- **Historical Data**: Comprehensive tracking with visual progress trends
+### 🍽️ Meal Tracking
+- **Photo-based meal logging** with multiple source options (manual, AI, scan, search)
+- **Detailed nutritional breakdown** (protein, carbs, fat, calories)
+- **Smart meal items management** with quantity and unit tracking
+- **Date-based filtering** and meal history
+- **Real-time macro calculations** with meal totals
 
-### User Experience
-- **Progressive Web App**: Install on any device for native app experience
-- **Mobile-First Design**: Optimized for smartphones with responsive layout
-- **Smooth Animations**: Framer Motion powered transitions and micro-interactions
-- **Real-time Updates**: Instant feedback and progress updates
-- **Offline Capability**: Local storage for seamless offline usage
+### 🎯 Goal Management
+- **Dynamic protein goals** with customizable targets
+- **Date-range based goals** with automatic transitions
+- **Historical goal tracking** and progress analysis
+- **Smart goal overlap handling** to prevent conflicts
 
-### Technical Features
-- **Modern Stack**: Next.js 15, TypeScript, Tailwind CSS
-- **State Management**: Zustand for efficient global state
-- **UI Components**: shadcn/ui for consistent, accessible design
-- **Charts & Visualization**: Recharts for data visualization
-- **Camera Integration**: React Webcam for photo capture
-- **Toast Notifications**: Sonner for user feedback
+### 💪 Habit Tracking
+- **Custom habit creation** with frequency targets (1-7 days/week)
+- **Daily completion logging** with unique date constraints
+- **Progress statistics** including completion rates
+- **Archive functionality** for completed or paused habits
 
-## 📱 Installation & Setup
+### 📊 Physical Progress
+- **Multi-metric tracking**: weight, body fat percentage, height
+- **Automatic BMI calculation** with intelligent height lookup
+- **Progress change calculations** between entries
+- **Time-based analytics** with days-since-last tracking
+
+### 🔐 Authentication & Security
+- **JWT-based authentication** with secure token management
+- **Multiple auth providers** support (local, Google, Apple, Facebook)
+- **Password strength validation** with complexity requirements
+- **User profile management** with secure email updates
+
+## 🛠️ Technology Stack
+
+- **Framework**: Next.js 15.2.4 with App Router
+- **Database**: PostgreSQL with UUID primary keys
+- **Authentication**: JWT with bcryptjs password hashing
+- **Validation**: Zod schemas with comprehensive input validation
+- **UI Components**: Radix UI with Tailwind CSS styling
+- **Animations**: Framer Motion for smooth interactions
+- **State Management**: Zustand for client-side state
+- **Forms**: React Hook Form with resolver integration
+- **Charts**: Recharts for data visualization
+- **Testing**: Vitest with React Testing Library
+
+## 📦 Installation
 
 ### Prerequisites
 - Node.js 18+ 
-- npm or yarn package manager
+- PostgreSQL 12+
+- npm or yarn
 
-### Quick Start
-```bash
-# Clone the repository
-git clone <repository-url>
-cd dynprotmobile
+### Setup
 
-# Install dependencies
-npm install
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd dynprotmobile
+   ```
 
-# Start development server
-npm run dev
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-# Open browser to http://localhost:3000
-```
+3. **Environment Configuration**
+   Create a `.env.local` file:
+   ```env
+   DATABASE_URL=postgresql://user:password@localhost:5432/dynprotmobile
+   JWT_SECRET=your-super-secure-jwt-secret-key
+   NEXTAUTH_SECRET=your-nextauth-secret
+   ```
 
-### Demo Credentials
-- **Email**: demo@dynprot.com
-- **Password**: demo123
+4. **Database Setup**
+   ```bash
+   # Create database
+   createdb dynprotmobile
+   
+   # Run schema migration
+   psql -d dynprotmobile -f database/schema.sql
+   ```
+
+5. **Start Development Server**
+   ```bash
+   npm run dev
+   ```
+
+   Visit [http://localhost:3000](http://localhost:3000)
 
 ## 🏗️ Project Structure
 
 ```
-dynprotmobile/
-├── app/                    # Next.js App Router
-│   ├── globals.css        # Global styles and Tailwind config
-│   ├── layout.tsx         # Root layout with PWA meta tags
-│   └── page.tsx           # Main application entry point
-├── components/            # React components
-│   ├── ui/               # shadcn/ui base components
-│   ├── DynProtMobileApp.tsx   # Main app component
-│   ├── LoginForm.tsx          # Authentication interface
-│   ├── Dashboard.tsx          # Home screen with progress
-│   ├── AddMealForm.tsx        # Meal logging interface
-│   ├── HistoryView.tsx        # Historical data visualization
-│   ├── ProfileView.tsx        # User settings and profile
-│   ├── ProteinProgressRing.tsx # Animated progress indicator
-│   ├── MealCard.tsx           # Individual meal display
-│   └── BottomNavigation.tsx   # Mobile navigation
-├── lib/                   # Utilities and configuration
-│   ├── store.ts          # Zustand state management
-│   └── utils.ts          # Utility functions
-├── public/               # Static assets
-│   ├── manifest.json     # PWA manifest
-│   └── icon-*.png       # App icons
-└── tailwind.config.ts    # Tailwind CSS configuration
+├── app/                          # Next.js App Router
+│   ├── api/                      # API Routes
+│   │   ├── auth/                 # Authentication endpoints
+│   │   ├── users/[id]/           # User profile management
+│   │   ├── meals/                # Meal CRUD operations
+│   │   ├── goals/                # Protein goal management
+│   │   ├── habits/               # Habit tracking
+│   │   └── progress/             # Physical progress logging
+│   ├── (auth)/                   # Auth-protected pages
+│   └── globals.css               # Global styles
+├── components/                   # Reusable UI components
+│   ├── ui/                       # Base UI components (Radix)
+│   └── ...                       # Feature-specific components
+├── lib/                          # Utility libraries
+│   ├── db.ts                     # Database connection & queries
+│   ├── validation.ts             # Zod validation schemas
+│   ├── auth.ts                   # JWT utilities
+│   └── utils.ts                  # Common utilities
+├── database/
+│   └── schema.sql                # PostgreSQL schema
+├── docs/                         # API documentation
+└── types/                        # TypeScript type definitions
 ```
 
-## 🎨 Design System
+## 🔗 API Endpoints
 
-### Color Palette
-- **Primary**: #10B981 (Emerald-500) - Health and growth
-- **Secondary**: #3B82F6 (Blue-500) - Trust and reliability  
-- **Accent**: #F59E0B (Amber-500) - Achievement highlights
-- **Background**: #F8FAFC (Slate-50) - Clean, breathable space
-- **Text**: #1E293B (Slate-800) - High contrast readability
+### Authentication
+- `POST /api/auth/signup` - User registration
+- `POST /api/auth/login` - User login
+- `POST /api/auth/social` - Social authentication
 
-### Typography
-- **Font Family**: Inter - Clean, modern, highly readable
-- **Responsive Sizing**: Mobile-first approach with appropriate scales
-- **Weight Hierarchy**: Light to bold for visual information hierarchy
+### User Management
+- `GET /api/users/[id]` - Get user profile
+- `PATCH /api/users/[id]` - Update user profile
+- `DELETE /api/users/[id]` - Delete user account
 
-### Layout Principles
-- **Mobile-First**: Designed for smartphones, enhanced for tablets/desktop
-- **Card-Based**: Consistent card patterns for content organization
-- **Progressive Disclosure**: Information revealed based on user needs
-- **Accessible Navigation**: Clear visual hierarchy and touch targets
+### Meals
+- `GET /api/meals` - List user meals (with filtering)
+- `POST /api/meals` - Create new meal
+- `GET /api/meals/[id]` - Get meal details
+- `PATCH /api/meals/[id]` - Update meal
+- `DELETE /api/meals/[id]` - Delete meal
 
-## 🔧 Development Guide
+### Meal Items
+- `POST /api/meals/[id]/items` - Add food item to meal
+- `PATCH /api/meals/[id]/items/[itemId]` - Update food item
+- `DELETE /api/meals/[id]/items/[itemId]` - Remove food item
 
-### Key Components
+### Goals
+- `GET /api/goals` - Get active protein goal
+- `POST /api/goals` - Create/update protein goal
+- `GET /api/goals/history` - Get goal history
 
-#### State Management (`lib/store.ts`)
-```typescript
-// Global app state with Zustand
-interface AppState {
-  user: User | null;
-  todaysMeals: Meal[];
-  dailyProteinGoal: number;
-  totalProteinToday: number;
-  // ... actions and computed values
-}
-```
+### Habits
+- `GET /api/habits` - List user habits
+- `POST /api/habits` - Create new habit
+- `PATCH /api/habits/[id]` - Update habit
+- `DELETE /api/habits/[id]` - Delete habit
 
-#### Mock AI Integration
-```typescript
-// Placeholder for future API integration
-const estimateProteinFromDescription = async (description: string): Promise<number> => {
-  // Current: Keyword matching algorithm
-  // Future: Real AI/ML service integration
-  // API endpoint structure ready for implementation
-};
-```
+### Habit Logs
+- `POST /api/habits/[id]/logs` - Log habit completion
+- `GET /api/habits/[id]/logs` - Get habit logs
+- `DELETE /api/habits/[id]/logs/[logId]` - Delete log
 
-### Adding New Features
+### Physical Progress
+- `GET /api/progress` - Get progress entries
+- `POST /api/progress` - Log new measurements
 
-1. **New Components**: Create in `/components` with TypeScript interfaces
-2. **State Updates**: Extend the Zustand store in `lib/store.ts`
-3. **Styling**: Use Tailwind classes with custom theme extensions
-4. **Routing**: Add new views to the main app component navigation
+## 💾 Database Schema
 
-### API Integration Points
+### Core Tables
+- **users**: User accounts with authentication
+- **daily_goals**: Protein goals with date ranges
+- **meals**: Meal entries with photo URLs
+- **meal_items**: Individual food items with macros
+- **habits**: User habits with frequency targets
+- **habit_logs**: Daily habit completion tracking
+- **physical_progress**: Weight, body fat, height, BMI logs
 
-The app is structured for easy integration with real backend services:
+### Key Features
+- **UUID primary keys** for security and scalability
+- **CASCADE deletes** for data consistency
+- **Check constraints** for data validation
+- **Optimized indexes** for query performance
+- **Automatic timestamps** with triggers
 
-```typescript
-// Ready for backend integration
-interface APIEndpoints {
-  auth: '/api/auth/login' | '/api/auth/register';
-  meals: '/api/meals' | '/api/meals/:id';
-  estimation: '/api/ai/estimate-protein';
-  user: '/api/user/profile' | '/api/user/goals';
-}
-```
+## 🧪 Development
 
-## 🌐 PWA Features
-
-### Installation
-- Users can install the app from their browser
-- Native-like icon on home screen
-- Standalone window without browser UI
-- Optimized for mobile devices
-
-### Offline Support
-- Local state management with persistence
-- Cached resources for offline usage
-- Background sync capability (ready for implementation)
-
-### Performance
-- Lazy loading for optimal initial load
-- Image optimization and compression
-- Efficient re-renders with React optimization
-
-## 🧪 Testing
-
+### Running Tests
 ```bash
-# Run type checking
-npm run type-check
+npm test
+```
 
-# Run linting
+### Linting
+```bash
 npm run lint
+```
 
-# Build production version
+### Building for Production
+```bash
 npm run build
-
-# Start production server
 npm start
 ```
 
-## 🚀 Deployment
-
-### Vercel (Recommended)
+### Database Migrations
+When schema changes are needed:
 ```bash
-# Install Vercel CLI
-npm i -g vercel
+# Backup existing data
+pg_dump dynprotmobile > backup.sql
 
-# Deploy
-vercel --prod
+# Apply new schema
+psql -d dynprotmobile -f database/schema.sql
+
+# Restore data if needed
 ```
 
-### Other Platforms
-- **Netlify**: Direct Git integration
-- **AWS Amplify**: Full-stack deployment
-- **Firebase Hosting**: Google Cloud integration
+## 🔒 Security Features
 
-## 🔮 Future Enhancements
+### Input Validation
+- **Zod schemas** for all API endpoints
+- **SQL injection prevention** with parameterized queries
+- **XSS protection** through input sanitization
+- **File upload validation** for meal photos
 
-### Phase 1: Real AI Integration
-- [ ] OpenAI GPT-4 Vision for photo analysis
-- [ ] Natural language processing for meal descriptions
-- [ ] Nutritional database integration (USDA FoodData Central)
+### Authentication Security
+- **JWT tokens** with expiration
+- **Password hashing** with bcryptjs
+- **Secure password requirements** (8+ chars, mixed case, numbers)
+- **Rate limiting** on authentication endpoints
 
-### Phase 2: Advanced Features
-- [ ] Barcode scanning for packaged foods
-- [ ] Recipe analysis and saving
-- [ ] Social features and meal sharing
-- [ ] Integration with fitness trackers
+### Data Protection
+- **User data isolation** - users can only access their own data
+- **Sensitive data exclusion** - password hashes never returned in API responses
+- **Database constraints** prevent invalid data states
 
-### Phase 3: Platform Expansion
-- [ ] Native iOS app with React Native
-- [ ] Native Android app with React Native
-- [ ] Apple Watch companion app
-- [ ] Desktop application with Electron
+## 📱 Mobile Optimization
 
-## 📊 Analytics & Monitoring
+### Performance
+- **Optimized database queries** with proper indexing
+- **Pagination support** for large datasets
+- **Efficient data structures** with calculated totals
+- **Image optimization** for meal photos
 
-Ready for integration with:
-- **Google Analytics 4**: User behavior tracking
-- **Sentry**: Error monitoring and performance
-- **LogRocket**: Session replay and debugging
-- **Mixpanel**: Advanced user analytics
+### User Experience
+- **Progressive Web App** capabilities
+- **Responsive design** with Tailwind CSS
+- **Touch-friendly interfaces** with proper hit targets
+- **Offline-ready architecture** with service workers
 
 ## 🤝 Contributing
 
-This is a demonstration project showcasing modern web development practices. The codebase is designed for:
-- **Scalability**: Modular architecture for easy feature additions
-- **Maintainability**: Clear separation of concerns and documentation
-- **Performance**: Optimized for mobile devices and slow networks
-- **Accessibility**: WCAG 2.1 compliance ready
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Code Standards
+- Follow TypeScript best practices
+- Use Prettier for code formatting  
+- Write tests for new features
+- Update documentation as needed
 
 ## 📄 License
 
-This project is a demonstration application built for educational and showcase purposes.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+For support and questions:
+- Check the [API documentation](docs/) for endpoint details
+- Review the database schema in `database/schema.sql`
+- Open an issue for bugs or feature requests
+
+## 🚀 Deployment
+
+### Environment Variables (Production)
+```env
+DATABASE_URL=postgresql://user:password@host:port/database?sslmode=require
+JWT_SECRET=your-production-jwt-secret
+NODE_ENV=production
+```
+
+### Recommended Hosting
+- **Vercel** for Next.js application
+- **Supabase** or **Railway** for PostgreSQL database
+- **Cloudinary** for image storage and optimization
 
 ---
 
-**Built with ❤️ using modern web technologies**
-
-*Ready for production deployment and real-world usage*# chat
+Built with ❤️ for health and nutrition tracking
