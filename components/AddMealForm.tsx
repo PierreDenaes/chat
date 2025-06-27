@@ -70,8 +70,22 @@ export function AddMealForm() {
       setEstimatedProtein(protein);
       toast.success(`Estimated ${protein}g of protein from photo!`);
     } catch (error) {
-      console.error('Error estimating protein from photo:', error);
-      toast.error('Failed to estimate protein from photo. Please try again.');
+      let errorMessage = 'Failed to estimate protein from photo. Please try again.';
+      
+      if (error && typeof error === 'object' && 'userMessage' in error) {
+        errorMessage = (error as any).userMessage;
+      } else if (error instanceof Error) {
+        // Log the technical error for debugging
+        console.error('Error estimating protein from photo:', {
+          message: error.message,
+          stack: error.stack,
+          timestamp: new Date().toISOString()
+        });
+      } else {
+        console.error('Unknown error estimating protein from photo:', error);
+      }
+      
+      toast.error(errorMessage);
     }
     setIsEstimating(false);
   };

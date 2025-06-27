@@ -1,4 +1,11 @@
 import { create } from 'zustand';
+import { createAppError, logError, handleApiCall, AppError } from './error-handling';
+
+// Helper function to get auth headers
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('auth-token');
+  return token ? { 'Authorization': `Bearer ${token}` } : {};
+};
 
 // Types
 export interface Meal {
@@ -320,16 +327,60 @@ const estimateProteinFromDescription = async (description: string): Promise<numb
 };
 
 const estimateProteinFromPhoto = async (photoData: string): Promise<number> => {
-  console.log('Estimating protein from photo:', photoData);
+  console.log('Estimating protein from photo using OpenAI Vision API');
   
-  // Simulate AI processing delay
-  await new Promise(resolve => setTimeout(resolve, 2000));
-  
-  // Mock AI estimation (in real app, this would analyze the photo)
-  const estimatedProtein = Math.floor(Math.random() * 40) + 15; // Random 15-55g
-  
-  console.log('Photo estimated protein:', estimatedProtein);
-  return estimatedProtein;
+  try {
+    // Extract base64 data if it includes data URL prefix
+    const base64Data = photoData.includes(',') ? photoData.split(',')[1] : photoData;
+    
+    // Get user ID from current state (assuming we have access to the store)
+    const currentUser = useAppStore.getState().user;
+    if (!currentUser) {
+      const error = createAppError(new Error('User not authenticated'), 'protein estimation');
+      logError(error, 'estimateProteinFromPhoto');
+      throw error;
+    }
+    
+    // Call our AI analysis endpoint using enhanced error handling
+    const analysisResult = await handleApiCall<any>(
+      () => fetch('/api/ai/analyze-meal', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...getAuthHeaders(),
+        },
+        body: JSON.stringify({
+          imageData: base64Data,
+          imageFormat: 'jpeg', // Default format
+          mealDate: new Date().toISOString().split('T')[0]
+        })
+      }),
+      'protein estimation from photo'
+    );
+
+    const totalProtein = analysisResult.analysis?.nutritionalSummary?.totalProtein || 0;
+    
+    console.log('OpenAI Vision analysis completed:', {
+      protein: totalProtein,
+      confidence: analysisResult.analysis?.overallConfidence,
+      processingTime: analysisResult.analysis?.processingTime
+    });
+    
+    return Math.round(totalProtein * 10) / 10; // Round to 1 decimal place
+    
+  } catch (error) {
+    // Don't provide fallback values, let the calling component handle the error
+    // This ensures proper error propagation to the UI
+    if (error && typeof error === 'object' && 'type' in error) {
+      // Already an AppError, re-throw it
+      throw error;
+    } else {
+      // Convert to AppError and re-throw
+      const appError = createAppError(error, 'protein estimation from photo');
+      logError(appError, 'estimateProteinFromPhoto');
+      throw appError;
+    }
+  }
 };
 
 // Helper functions
@@ -399,32 +450,59 @@ export const useAppStore = create<AppState>((set, get) => ({
   selectedHabit: null,
   
   // Actions
+  initializeAuth: () => {
+    const token = localStorage.getItem('auth-token');
+    if (token) {
+      // TODO: Verify token is still valid by calling /api/auth/me
+      // For now, just assume it's valid
+      console.log('Found existing auth token');
+    }
+  },
+  
   login: async (email: string, password: string) => {
     console.log('Attempting login:', email);
     set({ isLoading: true });
     
-    // Mock authentication
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    const user = mockUsers.find(u => u.email === email);
-    if (user && password === 'demo123') {
-      set({ 
-        user, 
-        isAuthenticated: true, 
-        dailyProteinGoal: user.dailyProteinGoal,
-        isLoading: false 
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
       });
-      console.log('Login successful:', user);
-      return true;
+
+      const data = await response.json();
+
+      if (response.ok && data.token) {
+        // Store token in localStorage
+        localStorage.setItem('auth-token', data.token);
+        
+        set({ 
+          user: data.user, 
+          isAuthenticated: true, 
+          dailyProteinGoal: data.user.dailyProteinGoal || 150, // Default goal
+          isLoading: false 
+        });
+        console.log('Login successful:', data.user);
+        return true;
+      } else {
+        set({ isLoading: false });
+        console.log('Login failed:', data.error);
+        return false;
+      }
+    } catch (error) {
+      set({ isLoading: false });
+      console.error('Login error:', error);
+      return false;
     }
-    
-    set({ isLoading: false });
-    console.log('Login failed');
-    return false;
   },
   
   logout: () => {
     console.log('Logging out');
+    // Clear token from localStorage
+    localStorage.removeItem('auth-token');
+    
     set({ 
       user: null, 
       isAuthenticated: false, 

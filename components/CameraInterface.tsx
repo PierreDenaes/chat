@@ -23,6 +23,7 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { useAppStore } from '@/lib/store';
 import { useFoodLogging } from '@/hooks/useFoodLogging';
+import { createAppError, logError, handleApiCall, AppError } from '@/lib/error-handling';
 import type { 
   CameraMode, 
   AnalysisState, 
@@ -47,6 +48,7 @@ export function CameraInterface({ onBack, onMealAdded, className }: FoodLoggingC
   const [isIngredientsExpanded, setIsIngredientsExpanded] = useState(false);
   const [macroTab, setMacroTab] = useState<MacroTab>('plate');
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('environment');
+  const [currentError, setCurrentError] = useState<AppError | null>(null);
   
   const webcamRef = useRef<Webcam>(null);
   const { setCurrentView, estimateProteinFromPhoto, addMeal } = useAppStore();
@@ -96,91 +98,131 @@ export function CameraInterface({ onBack, onMealAdded, className }: FoodLoggingC
   const startAnalysis = async () => {
     if (!capturedImage) return;
     
-    console.log('Starting AI analysis');
+    console.log('Starting OpenAI Vision AI analysis');
     setAnalysisState('analyzing');
+    setCurrentError(null);
     
     try {
-      // Simulate AI analysis with realistic delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Call the OpenAI Vision API through our endpoint
+      const user = useAppStore.getState().user;
+      if (!user) {
+        throw new Error('User not authenticated');
+      }
+
+      // Extract base64 data from data URL
+      const base64Data = capturedImage.split(',')[1];
       
-      // Estimate protein from photo using AI
-      const estimatedProtein = await estimateProteinFromPhoto(capturedImage);
+      const token = localStorage.getItem('auth-token');
       
-      // Mock AI ingredient detection with detailed data
-      const mockIngredientData: IngredientData[] = [
-        {
-          name: 'Grilled chicken breast',
-          status: 'found',
-          icon: '🍗',
-          macros: { protein: 31, carbs: 0, fat: 3.6 }
-        },
-        {
-          name: 'Brown rice',
-          status: 'found', 
-          icon: '🍚',
-          macros: { protein: 2.6, carbs: 23, fat: 0.9 }
-        },
-        {
-          name: 'Mixed vegetables',
-          status: 'searching',
-          icon: '🥬',
-          macros: { protein: 2, carbs: 8, fat: 0.2 }
-        },
-        {
-          name: 'Olive oil',
-          status: 'found',
-          icon: '🫒',
-          macros: { protein: 0, carbs: 0, fat: 14 }
+      const analysisData = await handleApiCall<any>(
+        () => fetch('/api/ai/analyze-meal', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(token && { 'Authorization': `Bearer ${token}` }),
+          },
+          body: JSON.stringify({
+            imageData: base64Data,
+            imageFormat: 'jpeg',
+            mealDate: new Date().toISOString().split('T')[0]
+          })
+        }),
+        'AI meal analysis'
+      );
+
+      const { analysis } = analysisData;
+      
+      // Convert OpenAI response to our component format
+      const ingredientData: IngredientData[] = analysis.foodItems.map((item: any) => ({
+        name: item.name,
+        status: 'found' as const,
+        icon: getFoodItemIcon(item.name),
+        macros: {
+          protein: item.protein,
+          carbs: item.carbs,
+          fat: item.fat
         }
-      ];
-      
-      const mockMealNames = [
-        'Grilled Chicken Power Bowl',
-        'Protein Paradise Plate', 
-        'Healthy Chicken & Rice',
-        'Balanced Macro Meal',
-        'Fitness Fuel Bowl'
-      ];
+      }));
 
-      const totalMacros = mockIngredientData.reduce(
-        (acc, ingredient) => {
-          if (ingredient.macros) {
-            acc.protein += ingredient.macros.protein;
-            acc.carbs += ingredient.macros.carbs;
-            acc.fat += ingredient.macros.fat;
-          }
-          return acc;
-        },
-        { protein: 0, carbs: 0, fat: 0, calories: 0 }
-      );
-
-      // Calculate calories (4 cal/g protein, 4 cal/g carbs, 9 cal/g fat)
-      totalMacros.calories = Math.round(
-        totalMacros.protein * 4 + totalMacros.carbs * 4 + totalMacros.fat * 9
-      );
+      // Generate a descriptive meal name from the detected items
+      const mealName = generateMealName(analysis.detectedItems);
       
       const result: AnalysisResult = {
-        mealName: mockMealNames[Math.floor(Math.random() * mockMealNames.length)],
-        ingredients: mockIngredientData,
-        confidence: 85 + Math.floor(Math.random() * 10), // 85-95%
-        estimatedProtein: Math.round(totalMacros.protein),
-        totalMacros
+        mealName,
+        ingredients: ingredientData,
+        confidence: Math.round(analysis.overallConfidence * 100),
+        estimatedProtein: Math.round(analysis.nutritionalSummary.totalProtein),
+        totalMacros: {
+          protein: analysis.nutritionalSummary.totalProtein,
+          carbs: analysis.nutritionalSummary.totalCarbs,
+          fat: analysis.nutritionalSummary.totalFat,
+          calories: analysis.nutritionalSummary.totalCalories
+        }
       };
       
       setAnalysisResult(result);
       setAnalysisState('results');
       
-      console.log('AI analysis completed:', result);
+      console.log('OpenAI Vision analysis completed:', {
+        processingTime: analysis.processingTime,
+        confidence: analysis.overallConfidence,
+        itemsDetected: analysis.foodItems.length
+      });
       
     } catch (error) {
-      console.error('Failed to analyze photo:', error);
+      let appError: AppError;
+      
+      // Convert error to AppError if not already
+      if (error && typeof error === 'object' && 'type' in error) {
+        appError = error as AppError;
+      } else {
+        appError = createAppError(error, 'AI meal analysis');
+        logError(appError, 'CameraInterface.startAnalysis');
+      }
+      
+      setCurrentError(appError);
       setAnalysisState('idle');
+      
       toast({
         title: "Analysis Failed",
-        description: "Unable to analyze photo. Please try again.",
+        description: appError.userMessage,
         variant: "destructive",
       });
     }
+  };
+
+  // Helper function to get appropriate emoji for food items
+  const getFoodItemIcon = (foodName: string): string => {
+    const name = foodName.toLowerCase();
+    if (name.includes('chicken') || name.includes('poultry')) return '🍗';
+    if (name.includes('beef') || name.includes('steak')) return '🥩';
+    if (name.includes('fish') || name.includes('salmon') || name.includes('tuna')) return '🐟';
+    if (name.includes('rice')) return '🍚';
+    if (name.includes('pasta') || name.includes('noodle')) return '🍝';
+    if (name.includes('bread') || name.includes('toast')) return '🍞';
+    if (name.includes('egg')) return '🥚';
+    if (name.includes('cheese')) return '🧀';
+    if (name.includes('vegetable') || name.includes('broccoli') || name.includes('spinach')) return '🥬';
+    if (name.includes('tomato')) return '🍅';
+    if (name.includes('potato')) return '🥔';
+    if (name.includes('avocado')) return '🥑';
+    if (name.includes('banana')) return '🍌';
+    if (name.includes('apple')) return '🍎';
+    if (name.includes('yogurt')) return '🥛';
+    if (name.includes('nuts') || name.includes('almond')) return '🥜';
+    if (name.includes('oil') || name.includes('olive')) return '🫒';
+    return '🍽️'; // Default food icon
+  };
+
+  // Helper function to generate descriptive meal names
+  const generateMealName = (detectedItems: string[]): string => {
+    if (detectedItems.length === 0) return 'Analyzed Meal';
+    
+    const mainItems = detectedItems.slice(0, 2).join(' & ');
+    const mealTypes = ['Bowl', 'Plate', 'Meal', 'Dish'];
+    const randomType = mealTypes[Math.floor(Math.random() * mealTypes.length)];
+    
+    return `${mainItems} ${randomType}`;
   };
 
   const confirmMeal = () => {

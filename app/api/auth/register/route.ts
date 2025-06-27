@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
     const clientIP = request.ip || request.headers.get('x-forwarded-for') || 'unknown';
     if (!checkRateLimit(clientIP, 5, 15 * 60 * 1000)) {
       return NextResponse.json(
-        { error: 'Too many signup attempts. Please try again later.' },
+        { error: 'Too many registration attempts. Please try again later.' },
         { status: 429 }
       );
     }
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
     }, { status: 201 });
 
   } catch (error) {
-    console.error('Signup error:', error);
+    console.error('Registration error:', error);
 
     if (error instanceof AuthError) {
       return NextResponse.json(

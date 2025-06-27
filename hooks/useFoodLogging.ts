@@ -71,12 +71,23 @@ export function useFoodLogging(options: UseFoodLoggingOptions = {}) {
 
       return { success: true };
     } catch (error) {
-      console.error('Failed to add meal from analysis:', error);
+      console.error('Failed to add meal from analysis:', {
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+        analysisResult: analysisResult.mealName,
+        timestamp: new Date().toISOString()
+      });
       
       if (showToastOnError) {
+        let errorMessage = "There was an error adding your meal. Please try again.";
+        
+        if (error && typeof error === 'object' && 'userMessage' in error) {
+          errorMessage = (error as any).userMessage;
+        }
+        
         toast({
           title: "Failed to Add Meal",
-          description: "There was an error adding your meal. Please try again.",
+          description: errorMessage,
           variant: "destructive",
         });
       }

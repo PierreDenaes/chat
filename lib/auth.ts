@@ -56,11 +56,24 @@ export function verifyToken(token: string): JWTPayload {
 }
 
 export function extractTokenFromRequest(request: NextRequest): string | null {
+  // First, try to get token from Authorization header
   const authHeader = request.headers.get('authorization');
-  if (!authHeader) return null;
-  
-  if (authHeader.startsWith('Bearer ')) {
+  if (authHeader && authHeader.startsWith('Bearer ')) {
     return authHeader.substring(7);
+  }
+  
+  // Fallback to checking cookies
+  const cookieHeader = request.headers.get('cookie');
+  if (cookieHeader) {
+    const cookies = cookieHeader.split(';').reduce((acc, cookie) => {
+      const [key, value] = cookie.trim().split('=');
+      acc[key] = value;
+      return acc;
+    }, {} as Record<string, string>);
+    
+    if (cookies['auth-token']) {
+      return cookies['auth-token'];
+    }
   }
   
   return null;
@@ -70,7 +83,7 @@ export async function authenticateRequest(request: NextRequest): Promise<JWTPayl
   const token = extractTokenFromRequest(request);
   
   if (!token) {
-    throw new AuthError('Authorization token required', 401);
+    throw new AuthError('Authorization token required. Please include a valid token in the Authorization header (Bearer <token>) or auth-token cookie.', 401);
   }
   
   return verifyToken(token);
